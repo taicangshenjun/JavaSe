@@ -1,7 +1,15 @@
 package course.chapter2;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
-
+/**
+ * 双向链表数据结构
+ * @author cm
+ * @param <E>
+ */
 public class MyChainTable<E> {
 	
 	private Node<E> first;
@@ -12,6 +20,20 @@ public class MyChainTable<E> {
 	
 	public MyChainTable(){
 		
+	}
+	
+	public MyChainTable(Collection<E> c){
+		this.size = c.size();
+		Iterator<E> iter = c.iterator();
+		E firstData = iter.next();
+		E lastData = firstData;
+		this.first = new Node<E>(firstData);
+		Node<E> preNode = first;
+		while(iter.hasNext()){
+			lastData = iter.next();
+			System.out.println(lastData.toString());
+		}
+		this.last = new Node<E>(lastData);
 	}
 	
 	public Node<E> add(E e){
@@ -146,6 +168,12 @@ public class MyChainTable<E> {
 		System.out.println(myChain.toString());
 		myChain.remove(1);
 		System.out.println(myChain.toString());
+		
+		List<Integer> list = new ArrayList<Integer>();
+		list.add(1);
+		list.add(2);
+		MyChainTable<Integer> myChain2 = new MyChainTable<Integer>(list);
+		System.out.println(myChain2.toString());
 	}
 	
 }
