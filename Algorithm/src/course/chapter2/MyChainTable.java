@@ -1,9 +1,7 @@
 package course.chapter2;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * 双向链表数据结构
@@ -12,10 +10,10 @@ import java.util.List;
  */
 public class MyChainTable<E> {
 	
+	//头元素
 	private Node<E> first;
 	
-	private Node<E> last;
-	
+	//链表实际元素数量
 	private int size;
 	
 	public MyChainTable(){
@@ -24,16 +22,27 @@ public class MyChainTable<E> {
 	
 	public MyChainTable(Collection<E> c){
 		this.size = c.size();
+		
 		Iterator<E> iter = c.iterator();
-		E firstData = iter.next();
-		E lastData = firstData;
-		this.first = new Node<E>(firstData);
-		Node<E> preNode = first;
-		while(iter.hasNext()){
-			lastData = iter.next();
-			System.out.println(lastData.toString());
+		if(iter.hasNext()){
+			E firstData = iter.next();
+			this.first = new Node<E>(firstData);
+			
+			E data = firstData;
+			Node<E> preNode = first;
+			
+			while(iter.hasNext()){
+				data = iter.next();
+				Node<E> node = new Node<E>(data);
+				preNode.setNext(node);
+				node.setPrevious(preNode);
+				preNode = node;
+			}
+			
+			preNode.setNext(this.first);
+			this.first.setPrevious(preNode);
 		}
-		this.last = new Node<E>(lastData);
+		
 	}
 	
 	public Node<E> add(E e){
@@ -42,15 +51,13 @@ public class MyChainTable<E> {
 			node.setPrevious(node);
 			node.setNext(node);
 			this.first = node;
-			this.last = node;
 		}else{
-			Node<E> preLast = this.last;
+			Node<E> preLast = this.first.getPrevious();
 			node.setPrevious(preLast);
 			node.setNext(this.first);
 			
 			preLast.setNext(node);
 			this.first.setPrevious(node);
-			this.last = node;
 		}
 		size ++;
 		return node;
@@ -63,7 +70,6 @@ public class MyChainTable<E> {
 		Node<E> node = new Node<E>(e);
 		if(index < size){
 			Node<E> sourceNode = get(index);
-			System.out.println(index + "," + sourceNode);
 			Node<E> prevNode = sourceNode.getPrevious();
 			node.setPrevious(prevNode);
 			node.setNext(sourceNode);
@@ -74,10 +80,6 @@ public class MyChainTable<E> {
 			if(index == 0){
 				this.first = node;
 			}
-			if(index == size - 1){
-				this.last = node;
-			}
-			
 			size ++;
 		}else{
 			add(e);
@@ -102,12 +104,9 @@ public class MyChainTable<E> {
 			}
 		}
 		if(index == size - 1){
-			if(size == 1){
-				this.last = null;
-			}else{
+			if(size != 1){
 				preNode.setNext(nextNode);
 				nextNode.setPrevious(preNode);
-				this.last = preNode;
 			}
 		}
 		if(index >0 && index < size - 1){
@@ -123,15 +122,13 @@ public class MyChainTable<E> {
 			throw new RuntimeException("超出范围！");
 		}
 		int circumNum = index;
-		Node<E> result = null;
+		Node<E> result = this.first;
 		if(index < this.size / 2){
-			result = this.first;
 			for(int i = 0; i < circumNum; i ++){
 				result = result.getNext();
 			}
 		}else{
-			result = this.last;
-			circumNum = this.size - circumNum - 1;
+			circumNum = this.size - circumNum;
 			for(int i = 0; i < circumNum; i ++){
 				result = result.getPrevious();
 			}
@@ -149,31 +146,6 @@ public class MyChainTable<E> {
 		}
 		result = result.lastIndexOf(",") > -1? result.substring(0, result.lastIndexOf(",")) + "]": result + "]";
 		return result;
-	}
-	
-	public static void main(String[] args) {
-		MyChainTable<String> myChain = new MyChainTable<String>();
-		myChain.add("a");
-		myChain.add("b");
-		myChain.add("c");
-		myChain.add("d");
-		myChain.add("e");
-		myChain.add("z", 5);
-		System.out.println(myChain.toString());
-		myChain.remove(2);
-		System.out.println(myChain.toString());
-		myChain.remove(0);
-		System.out.println(myChain.toString());
-		myChain.remove(3);
-		System.out.println(myChain.toString());
-		myChain.remove(1);
-		System.out.println(myChain.toString());
-		
-		List<Integer> list = new ArrayList<Integer>();
-		list.add(1);
-		list.add(2);
-		MyChainTable<Integer> myChain2 = new MyChainTable<Integer>(list);
-		System.out.println(myChain2.toString());
 	}
 	
 }
