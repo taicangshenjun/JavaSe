@@ -1,6 +1,5 @@
 package course.charper4;
 
-import course.util.ArrayUtils;
 
 /**
  * ц╟ещеепР
@@ -70,13 +69,6 @@ public class BubbleSort {
 				break;
 			}
 		}
-	}
-	
-	public static void main(String[] args) {
-		int[] array = ArrayUtils.createArray(10);
-		ArrayUtils.display(array);
-		sort3(array);
-		ArrayUtils.display(array);
 	}
 
 }
