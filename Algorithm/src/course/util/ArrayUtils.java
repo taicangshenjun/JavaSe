@@ -1,5 +1,10 @@
 package course.util;
 
+/**
+ * 数组的工具类
+ * @author cm
+ *
+ */
 public class ArrayUtils {
 	
 	public static void display(int[] array){
