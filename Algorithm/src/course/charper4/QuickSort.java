@@ -1,5 +1,9 @@
 package course.charper4;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Stack;
+
 import course.util.ArrayUtils;
 
 /**
@@ -9,6 +13,12 @@ import course.util.ArrayUtils;
  */
 public class QuickSort {
 
+	/**
+	 * 递归的方式实现快速排序
+	 * @param array
+	 * @param startIndex
+	 * @param endIndex
+	 */
 	public static void sort(int[] array, int startIndex, int endIndex){
 		if(startIndex >= endIndex){
 			return;
@@ -16,6 +26,43 @@ public class QuickSort {
 		int pivotIndex = partition2(array, startIndex, endIndex);
 		sort(array, startIndex, pivotIndex - 1);
 		sort(array, pivotIndex + 1, endIndex);
+	}
+	
+	/**
+	 * 非递归，使用栈的方式实现快速排序
+	 * @param array
+	 * @param startIndex
+	 * @param endIndex
+	 */
+	public static void sort2(int[] array, int startIndex, int endIndex) {
+		//
+		Stack<Map<String, Integer>> quickSortStack = new Stack<Map<String, Integer>>();
+		//
+		Map<String, Integer> rootParam = new HashMap<String, Integer>();
+		rootParam.put("startIndex", startIndex);
+		rootParam.put("endIndex", endIndex);
+		quickSortStack.push(rootParam);
+		
+		while(quickSortStack.size() > 0) {
+			Map<String, Integer> param = quickSortStack.pop();
+			int leftIndex = param.get("startIndex");
+			int rightIndex = param.get("endIndex");
+			int pivot = partition(array, leftIndex, rightIndex);
+			
+			if(pivot > leftIndex + 1) {
+				Map<String, Integer> leftParam = new HashMap<String, Integer>();
+				leftParam.put("startIndex", leftIndex);
+				leftParam.put("endIndex", pivot - 1);
+				quickSortStack.push(leftParam);
+			}
+			if(pivot < rightIndex - 1) {
+				Map<String, Integer> rightParam = new HashMap<String, Integer>();
+				rightParam.put("startIndex", pivot + 1);
+				rightParam.put("endIndex", rightIndex);
+				quickSortStack.push(rightParam);
+			}
+		}
+		
 	}
 	
 	/**
@@ -77,7 +124,7 @@ public class QuickSort {
 //				11,17,23,48,54,70,54,96,98,41
 //		};
 		ArrayUtils.display(array);
-		sort(array, 0, array.length - 1);
+		sort2(array, 0, array.length - 1);
 		ArrayUtils.display(array);
 	}
 	
