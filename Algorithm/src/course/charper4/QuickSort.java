@@ -13,11 +13,18 @@ public class QuickSort {
 		if(startIndex >= endIndex){
 			return;
 		}
-		int pivotIndex = partition(array, startIndex, endIndex);
+		int pivotIndex = partition2(array, startIndex, endIndex);
 		sort(array, startIndex, pivotIndex - 1);
 		sort(array, pivotIndex + 1, endIndex);
 	}
 	
+	/**
+	 * 双边循环法
+	 * @param array
+	 * @param startIndex
+	 * @param endIndex
+	 * @return
+	 */
 	public static int partition(int[] array, int startIndex, int endIndex){
 		int pivot = array[startIndex];
 		int left = startIndex;
@@ -40,8 +47,35 @@ public class QuickSort {
 		return left;
 	}
 	
+	/**
+	 * 单边循环法
+	 * @param array
+	 * @param startIndex
+	 * @param endIndex
+	 * @return
+	 */
+	public static int partition2(int[] array, int startIndex, int endIndex){
+		int pivot = array[startIndex];
+		int mark = startIndex;
+		int key = startIndex + 1;
+		while(key <= endIndex){
+			if(array[key] < pivot){
+				int temp = array[key];
+				array[key] = array[ ++ mark];
+				array[mark] = temp;
+			}
+			key ++;
+		}
+		array[startIndex] = array[mark];
+		array[mark] = pivot;
+		return mark;
+	}
+	
 	public static void main(String[] args) {
 		int[] array = ArrayUtils.createArray(10);
+//		int[] array = new int[]{
+//				11,17,23,48,54,70,54,96,98,41
+//		};
 		ArrayUtils.display(array);
 		sort(array, 0, array.length - 1);
 		ArrayUtils.display(array);
