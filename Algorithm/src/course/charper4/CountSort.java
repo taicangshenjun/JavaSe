@@ -44,7 +44,7 @@ public class CountSort {
 	
 	/**
 	 * 优化排序
-	 * 相比方法sort，优化算法可确定值一定时，先后顺序不发生改变
+	 * 相比方法sort，优化算法可确定值相等时，先后顺序不发生改变
 	 * @param array
 	 * @return
 	 */
