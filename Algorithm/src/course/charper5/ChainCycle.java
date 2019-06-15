@@ -19,7 +19,7 @@ public class ChainCycle {
 		boolean flag = false;
 		Node<Object> index1 = head;
 		Node<Object> index2 = head;
-		while(head != null && head.getNext() != null){
+		while(index2 != null && index2.getNext() != null){
 			index1 = index1.getNext();
 			index2 = index2.getNext().getNext();
 			if(index1 == index2){
@@ -29,6 +29,38 @@ public class ChainCycle {
 		}
 		
 		return flag;
+	}
+	
+	/**
+	 * 计算环的长度
+	 * 第二次相遇node1走过的路程，追击问题node2第二次相遇比node1正好多走一圈，且回到起点
+	 * node1在第二次相遇所在的点也是入环点
+	 * @param head
+	 * @return
+	 */
+	public static int calculateCycleLength(Node<Object> head) {
+		Node<Object> node1 = head;
+		Node<Object> node2 = head;
+		boolean flag = false;
+		while(node2 != null && node2.getNext() != null) {
+			node1 = node1.getNext();
+			node2 = node2.getNext().getNext();
+			if(node1 == node2) {
+				flag = true;
+				break;
+			}
+		}
+		if(flag) {
+			int cycleLength = 0;
+			do {
+				node1 = node1.getNext();
+				node2 = node2.getNext().getNext();
+				cycleLength ++;
+			}while(node1 != node2);
+			return cycleLength;
+		}else {
+			return -1;
+		}
 	}
 
 	public static void main(String[] args) {
@@ -43,6 +75,7 @@ public class ChainCycle {
 		node4.setNext(node5);
 		node5.setNext(node2);
 		System.out.println("是否有环：" + isCycle(node1));
+		System.out.println("环长为：" + calculateCycleLength(node1));
 	}
 	
 }
