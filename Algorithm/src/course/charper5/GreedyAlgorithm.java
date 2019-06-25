@@ -1,5 +1,6 @@
 package course.charper5;
 
+import java.util.Stack;
 
 /**
  * 求一个数字，去掉k位后的最小值。
@@ -46,10 +47,43 @@ public class GreedyAlgorithm {
 		return result;
 	}
 	
+	/**
+	 * 利用栈的特性，不断比较数组和栈顶的大小
+	 * @param num
+	 * @param k
+	 * @return
+	 */
+	public static int removeDigits2(int num, int k) {
+		int[] numbers = intTransferArray(num);
+		int result = 0;
+		Stack<Integer> stack = new Stack<Integer>();
+		for(int i = 0; i < numbers.length; i ++) {
+			if(stack.isEmpty()) {
+				stack.push(numbers[i]);
+			}
+			if(numbers[i] < stack.peek() && k > 0) {
+				stack.pop();
+				k --;
+			}
+			if(i > 0) {
+				stack.push(numbers[i]);
+			}
+		}
+		while(k -- > 0) {
+			stack.pop();
+		}
+		
+		int multiplier = 1;
+		while(!stack.isEmpty()) {
+			result += stack.pop() * multiplier;
+			multiplier *= 10;
+		}
+		return result;
+	}
+	
 	public static void main(String[] args) {
-		System.out.println(removeDigits(13593212, 2));
-		System.out.println(removeDigits(13593212, 3));
 		System.out.println(removeDigits(541270936, 3));
+		System.out.println(removeDigits2(4123, 2));
 	}
 	
 }
