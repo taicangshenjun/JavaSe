@@ -61,7 +61,7 @@ public class GreedyAlgorithm {
 			if(stack.isEmpty()) {
 				stack.push(numbers[i]);
 			}
-			if(numbers[i] < stack.peek() && k > 0) {
+			while(!stack.isEmpty() && numbers[i] < stack.peek() && k > 0) {
 				stack.pop();
 				k --;
 			}
@@ -81,9 +81,30 @@ public class GreedyAlgorithm {
 		return result;
 	}
 	
+	public static String removeDigits3(String num, int k){
+		int newLength = num.length() - k;
+		char[] stack = new char[num.length()];
+		int top = 0;
+		for(int i = 0; i < num.length(); ++ i){
+			char c = num.charAt(i);
+			while(top > 0 && stack[top - 1] > c && k > 0){
+				top -= 1;
+				k -= 1;
+			}
+			stack[top ++] = c;
+		}
+		
+		int offset = 0;
+		while(offset < newLength && stack[offset] == '0'){
+			offset ++;
+		}
+		return offset == newLength? "0": new String(stack, offset, newLength - offset);
+	}
+	
 	public static void main(String[] args) {
-		System.out.println(removeDigits(541270936, 3));
-		System.out.println(removeDigits2(4123, 2));
+		System.out.println(removeDigits(453270936, 3));
+		System.out.println(removeDigits2(453270936, 3));
+		System.out.println(removeDigits3("450270936", 3));
 	}
 	
 }
