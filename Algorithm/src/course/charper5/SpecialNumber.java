@@ -80,7 +80,7 @@ public class SpecialNumber {
 	
 	/**
 	 * 
-	 * @param numbers		待分制数组
+	 * @param numbers		待分治数组
 	 * @param bitPos		第几位为1
 	 * @return
 	 */
