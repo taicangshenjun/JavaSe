@@ -45,7 +45,18 @@ public class LRUCache {
 	 * @param value
 	 */
 	public void put(String key, String value){
-		
+		Node node = hashMap.get(key);
+		if(node != null) {
+			node.value = value;
+			refreshNode(node);
+		}else {
+			if(hashMap.size() >= limit) {
+				remove(head.key);
+			}
+			Node newNode = new Node(key, value);
+			hashMap.put(key, newNode);
+			addNode(newNode);
+		}
 	}
 	
 	/**
@@ -53,7 +64,12 @@ public class LRUCache {
 	 * @param key
 	 */
 	public void remove(String key){
-		
+		Node node = hashMap.get(key);
+		if(node == null) {
+			return;
+		}
+		hashMap.remove(node.key);
+		removeNode(node);
 	}
 	
 	/**
@@ -69,11 +85,15 @@ public class LRUCache {
 	}
 	
 	/**
-	 * 删除节点
+	 * 删除链表节点
 	 * @param node
 	 * @return
 	 */
 	private String removeNode(Node node){
+		if(node != head && node != end){
+			node.pre.next = node.next;
+			node.next.pre = node.pre;
+		}
 		if(node == head){
 			head = node.next;
 			head.pre = null;
@@ -82,15 +102,11 @@ public class LRUCache {
 			end = node.pre;
 			end.next = null;
 		}
-		if(node != head && node != end){
-			node.pre.next = node.next;
-			node.next.pre = node.pre;
-		}
 		return node.key;
 	}
 	
 	/**
-	 * 尾部添加节点
+	 * 链表尾部添加节点
 	 * @param node
 	 */
 	private void addNode(Node node){
@@ -114,6 +130,21 @@ public class LRUCache {
 		public Node next;
 		public String key;
 		public String value;
+	}
+	
+	public static void main(String[] args) {
+		LRUCache cache = new LRUCache(5);
+		cache.put("001", "用户1信息");
+		cache.put("002", "用户2信息");
+		cache.put("003", "用户3信息");
+		cache.put("004", "用户4信息");
+		cache.put("005", "用户5信息");
+		System.out.println(cache.get("002"));
+		cache.put("002", "用户2信息更新");
+		cache.put("006", "用户6信息");
+		System.out.println(cache.get("001"));
+		System.out.println(cache.get("002"));
+		System.out.println(cache.get("006"));
 	}
 	
 }
