@@ -3,6 +3,8 @@ package course.chapter2;
 import java.util.Collection;
 import java.util.Iterator;
 
+import course.entity.Node;
+
 /**
  * 双向链表数据结构
  * @author cm

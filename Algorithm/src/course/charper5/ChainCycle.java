@@ -1,6 +1,6 @@
 package course.charper5;
 
-import course.chapter2.Node;
+import course.entity.Node;
 
 /**
  * 判断链表是否有环
