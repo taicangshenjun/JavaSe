@@ -12,6 +12,9 @@ import course.entity.Grid;
  */
 public class AStarSearch {
 	
+	/**
+	 * 迷宫，0是可通过道路，1是障碍物
+	 */
 	private static int[][] MAZE = new int[][]{
 		{0, 0, 0, 0, 0, 0, 0},
 		{0, 0, 0, 1, 0, 0, 0},
@@ -24,7 +27,9 @@ public class AStarSearch {
 		if(startGrid.equals(endGrid)){
 			return startGrid;
 		}
+		//可通过的节点
 		List<Grid> openList = new ArrayList<Grid>();
+		//已通过的节点
 		List<Grid> closeList = new ArrayList<Grid>();
 		
 		startGrid.initialize(endGrid, null);
@@ -51,6 +56,12 @@ public class AStarSearch {
 		return null;
 	}
 	
+	/**
+	 * 找出下一步的节点
+	 * @param parentGrid
+	 * @param endGrid
+	 * @return
+	 */
 	public List<Grid> findNeighborsGrid(Grid parentGrid, Grid endGrid){
 		int x = parentGrid.getX();
 		int y = parentGrid.getY();
