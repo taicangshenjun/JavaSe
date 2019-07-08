@@ -33,14 +33,14 @@ public class AStarSearch {
 		List<Grid> closeList = new ArrayList<Grid>();
 		
 		startGrid.initialize(endGrid, null);
-		openList.add(startGrid);
-		Grid minFGrid = findMinFGrid(openList);
-		openList.remove(minFGrid);
+		Grid minFGrid = startGrid;
 		closeList.add(minFGrid);
+		List<Grid> neightbors = null;
 		
 		do{
-			List<Grid> neightbors = findNeighborsGrid(minFGrid, endGrid);
+			neightbors = findNeighborsGrid(minFGrid, endGrid);
 			for(Grid grid: neightbors){
+				//避免重复，已走过的路径不会再走一次
 				if(!openList.contains(openList) && !closeList.contains(grid)){
 					openList.add(grid);
 				}
