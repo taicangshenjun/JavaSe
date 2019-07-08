@@ -41,7 +41,7 @@ public class AStarSearch {
 			neightbors = findNeighborsGrid(minFGrid, endGrid);
 			for(Grid grid: neightbors){
 				//避免重复，已走过的路径不会再走一次
-				if(!openList.contains(openList) && !closeList.contains(grid)){
+				if(!openList.contains(grid) && !closeList.contains(grid)){
 					openList.add(grid);
 				}
 			}
