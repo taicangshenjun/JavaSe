@@ -260,7 +260,7 @@ public class RBTree<T extends Comparable<T>> {
 		
 		//如果该节点没有右子树，则再分为两种情况
 		//1.该节点是它父节点的左子节点，则它的父节点为最小节点
-		//2.改节点是它父节点的右子节点，则它最近的，并在其左子树的最近的祖先节点
+		//2.该节点是它父节点的右子节点，则它最近的，并在其左子树的最近的祖先节点
 		RBTNode<T> y = x.parent;
 		while(y != null && x == y.right) {
 			x = y;
@@ -279,15 +279,104 @@ public class RBTree<T extends Comparable<T>> {
 		if(x.left != null)
 			return maximum(x.left);
 		
+		//如果该节点没有左子树，则再分为两种情况
+		//1.该节点是它父节点的右子节点，则它的父节点为最大节点
+		//2.该节点是它父节点的左子节点，则它最近的，并在其左子树的最近的祖先节点
 		RBTNode<T> y = x.parent;
 		while(y != null && y.left == x) {
 			x = y;
 			y = y.parent;
 		}
-		return maximum(y.left);
+		return y;
 	}
 	
+	/**
+	 * 对红黑树的节点(x)进行左旋转
+     *
+     * 左旋示意图(对节点x进行左旋)：
+     *      px                              px
+     *     /                               /
+     *    x                               y                
+     *   /  \      --(左旋)-.            /  \          
+     *  lx   y                          x   ry     
+     *     /   \                       /  \
+     *    ly   ry                     lx  ly  
+	 * @param x
+	 */
+	private void leftRotate(RBTNode<T> x) {
+		// 设置x的右孩子为y
+        RBTNode<T> y = x.right;
+        
+        if(y == null)
+        	return;
+
+        // 将 “y的左孩子” 设为 “x的右孩子”；
+        // 如果y的左孩子非空，将 “x” 设为 “y的左孩子的父亲”
+        x.right = y.left;
+        if (y.left != null)
+            y.left.parent = x;
+
+        // 将 “x的父亲” 设为 “y的父亲”
+        y.parent = x.parent;
+
+        if (x.parent == null) {
+            this.rootNode = y;            // 如果 “x的父亲” 是空节点，则将y设为根节点
+        } else {
+            if (x.parent.left == x)
+                x.parent.left = y;    // 如果 x是它父节点的左孩子，则将y设为“x的父节点的左孩子”
+            else
+                x.parent.right = y;    // 如果 x是它父节点的左孩子，则将y设为“x的父节点的左孩子”
+        }
+
+        // 将 “x” 设为 “y的左孩子”
+        y.left = x;
+        // 将 “x的父节点” 设为 “y”
+        x.parent = y;
+	}
 	
+	/**
+	 * 对红黑树的节点(y)进行右旋转
+     *
+     * 右旋示意图(对节点y进行左旋)：
+     *            py                               py
+     *           /                                /
+     *          y                                x                  
+     *         /  \      --(右旋)-.             /  \                     
+     *        x   ry                           lx   y  
+     *       / \                                   / \                   
+     *      lx  rx                                rx  ry
+     *      
+     * 需要处理的是y-rx, rx-y, x-py, py-x, x-y, y-x的变换
+	 * @param x
+	 */
+	private void rightRotate(RBTNode<T> y) {
+		RBTNode<T> x = y.left;
+		if(x == null)
+			return;
+		
+		//y-rx
+		y.left = x.right;
+		//rx-y
+		if(x.right != null)
+			x.right.parent = y;
+		
+		//x-py
+		x.parent = y.parent;
+		
+		if(y.parent == null) {
+			this.rootNode = y.parent;
+		}else {
+			//py-x
+			if(y.parent.left == y)
+				y.parent.left = x;
+			else
+				y.parent.right = x;
+		}
+		//x-y
+		x.right = y;
+		//y-x
+		y.parent = x;
+	}
 	
 	
 	
