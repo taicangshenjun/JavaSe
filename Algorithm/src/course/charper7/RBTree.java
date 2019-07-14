@@ -378,7 +378,130 @@ public class RBTree<T extends Comparable<T>> {
 		y.parent = x;
 	}
 	
+	/**
+	 * 红黑树插入修正函数
+     *
+     * 在向红黑树中插入节点之后(失去平衡)，再调用该函数；
+     * 目的是将它重新塑造成一颗红黑树。
+     *
+     * 参数说明：
+     *     node 插入的结点        // 对应《算法导论》中的z
+	 * @param node
+	 */
+	private void insertFixUp(RBTNode<T> node) {
+		RBTNode<T> parent, gparent;
+		
+		//若父节点存在，并且父节点是红色
+		while(((parent = parentOf(node)) != null) && isRed(parent)) {
+			gparent = parentOf(parent);
+			
+			//若“父节点”是“祖父节点的左孩子”
+			if(parent == gparent.left) {
+				RBTNode<T> uncle = gparent.right;
+				
+				// Case 1条件：叔叔节点是红色
+                if (uncle != null && isRed(uncle)) {
+                	setRed(gparent);
+                	setBlack(parent);
+                    setBlack(uncle);
+                    node = gparent;
+                    continue;
+                }
+                
+                // Case 2条件：叔叔是黑色，且当前节点是右孩子
+                if (parent.right == node) {
+                    leftRotate(parent);
+                    RBTNode<T> tmp = parent;
+                    parent = node;
+                    node = tmp;
+                }
+                
+                // Case 3条件：叔叔是黑色，且当前节点是左孩子。
+                setBlack(parent);
+                setRed(gparent);
+                rightRotate(gparent);
+			}else {//若“z的父节点”是“z的祖父节点的右孩子”
+				RBTNode<T> uncle = gparent.left;
+                
+				// Case 1条件：叔叔节点是红色
+				if(uncle != null && isRed(uncle)) {
+					setRed(gparent);
+					setBlack(parent);
+					setBlack(uncle);
+					node = gparent;
+					continue;
+				}
+				
+				// Case 2条件：叔叔是黑色，且当前节点是左孩子
+				if(parent.left == node) {
+					rightRotate(parent);
+					RBTNode<T> temp = parent;
+					parent = node;
+					node = temp;
+				}
+				
+				// Case 3条件：叔叔是黑色，且当前节点是左孩子。
+                setBlack(parent);
+                setRed(gparent);
+                rightRotate(gparent);
+			}
+		}
+		
+	}
 	
+	/**
+	 * 将结点插入到红黑树中
+     *
+     * 参数说明：
+     *     node 插入的结点        // 对应《算法导论》中的node
+	 * @param node
+	 */
+	private void insert(RBTNode<T> node) {
+		int cmp;
+		RBTNode<T> x = this.rootNode;
+		RBTNode<T> y = null;
+		
+		//找到父节点
+		while(x != null) {
+			y = x;
+			cmp = node.key.compareTo(x.key);
+			if(cmp < 0)
+				x = x.left;
+			else if(cmp > 0)
+				x = x.right;
+		}
+		node.parent = y;
+		
+		//确定是父节点的那个子节点
+		if(y != null) {
+			cmp = node.key.compareTo(y.key);
+			if(cmp < 0)
+				y.left = node;
+			else
+				y.right = node;
+		}else {
+			this.rootNode = node;
+		}
+		
+		//设置颜色
+		node.color = RED;
+		
+		//红黑树重新平衡
+		insertFixUp(node);
+	}
+	
+	/**
+	 * 新建结点(key)，并将其插入到红黑树中
+     *
+     * 参数说明：
+     *     key 插入结点的键值
+	 * @param key
+	 */
+	public void insert(T key) {
+		RBTNode<T> node = new RBTNode<T>(key, BLACK, null, null, null);
+		if(node != null)
+			insert(node);
+	}
 	
 	
 }
