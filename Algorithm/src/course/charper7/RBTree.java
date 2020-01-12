@@ -520,7 +520,7 @@ public class RBTree<T extends Comparable<T>> {
 	private void removeFixUp(RBTNode<T> node, RBTNode<T> parent) {
 		RBTNode<T> other;
 
-        while ((node==null || isBlack(node)) && (node != this.rootNode)) {
+        while ((node == null || isBlack(node)) && (node != this.rootNode)) {
             if (parent.left == node) {
                 other = parent.right;
                 if (isRed(other)) {
@@ -531,15 +531,15 @@ public class RBTree<T extends Comparable<T>> {
                     other = parent.right;
                 }
 
-                if ((other.left==null || isBlack(other.left)) &&
-                    (other.right==null || isBlack(other.right))) {
+                if ((other.left == null || isBlack(other.left)) &&
+                    (other.right == null || isBlack(other.right))) {
                     // Case 2: x的兄弟w是黑色，且w的俩个孩子也都是黑色的  
                     setRed(other);
                     node = parent;
                     parent = parentOf(node);
                 } else {
 
-                    if (other.right==null || isBlack(other.right)) {
+                    if (other.right == null || isBlack(other.right)) {
                         // Case 3: x的兄弟w是黑色的，并且w的左孩子是红色，右孩子为黑色。  
                         setBlack(other.left);
                         setRed(other);
@@ -565,15 +565,15 @@ public class RBTree<T extends Comparable<T>> {
                     other = parent.left;
                 }
 
-                if ((other.left==null || isBlack(other.left)) &&
-                    (other.right==null || isBlack(other.right))) {
+                if ((other.left == null || isBlack(other.left)) &&
+                    (other.right == null || isBlack(other.right))) {
                     // Case 2: x的兄弟w是黑色，且w的俩个孩子也都是黑色的  
                     setRed(other);
                     node = parent;
                     parent = parentOf(node);
                 } else {
 
-                    if (other.left==null || isBlack(other.left)) {
+                    if (other.left == null || isBlack(other.left)) {
                         // Case 3: x的兄弟w是黑色的，并且w的左孩子是红色，右孩子为黑色。  
                         setBlack(other.right);
                         setRed(other);
@@ -592,7 +592,7 @@ public class RBTree<T extends Comparable<T>> {
             }
         }
 
-        if (node!=null)
+        if (node != null)
             setBlack(node);
 	}
 	
@@ -750,6 +750,15 @@ public class RBTree<T extends Comparable<T>> {
 	public void print() {
 		if(this.rootNode != null)
 			print(this.rootNode, this.rootNode.key, 0);
+	}
+	
+	public static void main(String[] args) {
+		RBTree<Integer> tree = new RBTree<Integer>();
+		tree.insert(8);
+		tree.insert(12);
+		tree.insert(9);
+		tree.insert(6);
+		tree.print();
 	}
 	
 }

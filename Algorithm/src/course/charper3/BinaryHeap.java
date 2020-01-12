@@ -53,6 +53,7 @@ public class BinaryHeap {
 		int[] array = new int[]{
 				1, 3, 2, 6, 5, 7, 8, 9, 10, 0
 		};
+		System.out.println(Arrays.toString(array));
 		upAdjust(array);
 		System.out.println(Arrays.toString(array));
 		
