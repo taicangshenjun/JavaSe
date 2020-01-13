@@ -21,13 +21,11 @@ public class LRUBaseLinkedList<T> {
 	private Integer capacity;
 	
 	public LRUBaseLinkedList() {
-		this.headNode = new SNode<T>();
 		this.capacity = DEFAULT_CAPACITY;
 		this.size = 0;
 	}
 	
 	public LRUBaseLinkedList(Integer capacity) {
-		this.headNode = new SNode<T>();
 		this.capacity = capacity;
 		this.size = 0;
 	}
@@ -42,9 +40,8 @@ public class LRUBaseLinkedList<T> {
 			//在头部插入
 			insertElemAtBegin(data);
 		}else {
-			if(size > capacity) {
+			if(size >= capacity)
 				deleteElemAtEnd();
-			}
 			insertElemAtBegin(data);
 		}
 	}
@@ -54,19 +51,24 @@ public class LRUBaseLinkedList<T> {
 		SNode<T> curNode = preNode.getNext();
 		preNode.setNext(curNode.getNext());
 		curNode = null;
-		if(size == capacity / 4 && capacity / 2 != 0)
-			capacityShrink();
-		else
-			capacity --;
+		size --;
 	}
 	
 	//链表头部插入节点
 	private void insertElemAtBegin(T data) {
-		
+		SNode<T> beforeheadNode = headNode;
+		headNode = new SNode<T>(data);
+		headNode.setNext(beforeheadNode);
+		if(size < capacity)
+			size ++;
+		else
+			deleteElemAtEnd();
 	}
 	
 	//获取查找到元素的前一个结点
 	private SNode<T> findPreNode(T data) {
+		if(headNode == null)
+			return null;
 		SNode<T> node = headNode;
 		while(node.getNext() != null) {
 			if(node.getNext().getElement().equals(data))
@@ -78,24 +80,44 @@ public class LRUBaseLinkedList<T> {
 	
 	//删除尾结点
 	private void deleteElemAtEnd() {
-		
+		if(headNode != null) {
+			SNode<T> node = headNode;
+			//倒数第二个节点
+			SNode<T> preNode = null;
+			while(node.getNext() != null) {
+				preNode = node;
+				node = node.getNext();
+			}
+			node = null;
+			if(preNode != null) {
+				preNode.setNext(node);
+			}
+			size --;
+		}
+			
 	}
 	
-	//扩容
-	private void capacityExpand() {
-		
-	}
 	
-	//缩容
-	private void capacityShrink() {
-		
-	}
 	
-	//
-	private void printAll() {
-		
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append(String.format("Array size: %d, capacity: %d", size, capacity));
+		builder.append("[");
+		SNode<T> node = headNode;
+		while(node != null) {
+			builder.append(node.getElement().toString()).append(", ");
+			node = node.getNext();
+		}
+		if(builder.lastIndexOf(", ") == (builder.length() - 2))
+			builder.delete(builder.length() - 2, builder.length());
+		builder.append("]");
+		return builder.toString();
 	}
-	
+
+
+
+	@SuppressWarnings("hiding")
 	public class SNode<T>{
 		
 		private T element;
@@ -134,4 +156,16 @@ public class LRUBaseLinkedList<T> {
 		}
 		
 	}
+	
+	public static void main(String[] args) {
+		LRUBaseLinkedList<String> lru = new LRUBaseLinkedList<String>(5);
+		lru.add("111");
+		lru.add("222");
+		lru.add("333");
+		lru.add("444");
+		lru.add("555");
+		lru.add("666");
+		System.out.println(lru.toString());
+	}
+	
 }
