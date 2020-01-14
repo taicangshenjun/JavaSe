@@ -171,9 +171,9 @@ public class Array<T> {
 		builder.append(String.format("Array size: %d, capacity: %d", length, data.length));
 		builder.append("[");
 		for(int i = 0; i < length; i ++)
-			builder.append(data[i].toString()).append(" ,");
-		if(builder.lastIndexOf(",") == (builder.length() - 1))
-			builder.deleteCharAt(builder.length() - 1);
+			builder.append(data[i].toString()).append(", ");
+		if(builder.lastIndexOf(", ") != -1 && builder.lastIndexOf(", ") == (builder.length() - 2))
+			builder.delete(builder.length() - 2, builder.length());
 		builder.append("]");
 		return builder.toString();
 	}

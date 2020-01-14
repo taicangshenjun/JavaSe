@@ -109,7 +109,7 @@ public class LRUBaseLinkedList<T> {
 			builder.append(node.getElement().toString()).append(", ");
 			node = node.getNext();
 		}
-		if(builder.lastIndexOf(", ") == (builder.length() - 2))
+		if(builder.lastIndexOf(", ") != -1 && builder.lastIndexOf(", ") == (builder.length() - 2))
 			builder.delete(builder.length() - 2, builder.length());
 		builder.append("]");
 		return builder.toString();
