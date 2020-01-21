@@ -30,9 +30,14 @@ package geekTime.dataStructureAndAlgorithm.array;
  */
 public class Array<T> {
 	
-	//存储元素
+	/**
+	 * 存储元素
+	 */
 	private T[] data;
-	//容量
+	
+	/**
+	 * 是实际的数组中元素数量
+	 */
 	private int length;
 	
 	public Array() {
