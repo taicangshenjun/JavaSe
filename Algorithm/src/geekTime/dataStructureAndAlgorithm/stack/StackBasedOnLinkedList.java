@@ -46,7 +46,6 @@ public class StackBasedOnLinkedList<T> {
 		
 		private Node<T> next;
 		
-		@SuppressWarnings("unused")
 		public Node(T data, Node<T> next) {
 			this.data = data;
 			this.next = next;
