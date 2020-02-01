@@ -17,8 +17,8 @@ public class CountSort {
 		if(array == null || array.length == 0) {
 			throw new RuntimeException("array is empty!");
 		}
-		int min = 0;
-		int max = 0;
+		int min = array[0];
+		int max = array[0];
 		for(int num: array) {
 			if(num < min) {
 				min = num;
@@ -30,7 +30,7 @@ public class CountSort {
 		int[] countArray = new int[max - min + 1];
 		for(int i = 0; i < array.length; i ++) {
 			int index = array[i] - min;
-			countArray[index] = countArray[index] + 1;
+			countArray[index] ++;
 		}
 		int index = 0;
 		for(int i = 0; i < countArray.length; i ++) {
